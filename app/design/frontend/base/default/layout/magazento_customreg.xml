@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+        <reference name="head">
+            <action method="addItem">
+                <type>js_css</type>
+                <name>calendar/calendar-win2k-1.css</name>
+                <params/><!--<if/><condition>can_load_calendar_js</condition>-->
+            </action>
+            <action method="addItem">
+                <type>js</type>
+                <name>calendar/calendar.js</name><!--<params/><if/><condition>can_load_calendar_js</condition>-->
+            </action>
+            <action method="addItem">
+                <type>js</type>
+                <name>calendar/calendar-setup.js</name><!--<params/><if/><condition>can_load_calendar_js</condition>-->
+            </action>
+            <block type="core/html_calendar" name="head.calendar" as="calendar" template="page/js/calendar.phtml"/>		
+        </reference>    
+        
+    </default>
+    <customer_account_create translate="label">   
+        <reference name="head">
+            <action method="addItem">
+                <type>js_css</type>
+                <name>calendar/calendar-win2k-1.css</name>
+                <params/><!--<if/><condition>can_load_calendar_js</condition>-->
+            </action>
+            <action method="addItem">
+                <type>js</type>
+                <name>calendar/calendar.js</name><!--<params/><if/><condition>can_load_calendar_js</condition>-->
+            </action>
+            <action method="addItem">
+                <type>js</type>
+                <name>calendar/calendar-setup.js</name><!--<params/><if/><condition>can_load_calendar_js</condition>-->
+            </action>
+            <block type="core/html_calendar" name="head.calendar" as="calendar" template="page/js/calendar.phtml"/>		
+        </reference>    
+        
+       
+        <reference name="customer_form_register">
+            <action method="setTemplate">
+                <template>magazento_customreg/form.phtml</template>
+            </action>	
+         </reference>
+       
+    </customer_account_create>
+    <customer_account_edit translate="label">
+        <reference name="head">
+            <action method="addItem">
+                <type>js_css</type>
+                <name>calendar/calendar-win2k-1.css</name>
+                <params/><!--<if/><condition>can_load_calendar_js</condition>-->
+            </action>
+            <action method="addItem">
+                <type>js</type>
+                <name>calendar/calendar.js</name><!--<params/><if/><condition>can_load_calendar_js</condition>-->
+            </action>
+            <action method="addItem">
+                <type>js</type>
+                <name>calendar/calendar-setup.js</name><!--<params/><if/><condition>can_load_calendar_js</condition>-->
+            </action>
+            <block type="core/html_calendar" name="head.calendar" as="calendar" template="page/js/calendar.phtml"/>	
+        </reference>   
+        <reference name="my.account.wrapper">
+            <block type="customer/form_edit" name="customer_edit" template="magazento_customreg/edit.phtml"/>
+        </reference>      
+    </customer_account_edit>
+    <checkout_onepage_index>
+        <reference name="checkout.onepage.billing">
+            <action method="setTemplate">
+                <template>magazento_customreg/onepage/billing.phtml</template>
+            </action>
+        </reference>
+    </checkout_onepage_index>
+</layout>

@@ -1,0 +1,4 @@
+<?php
+class Magazento_CustomReg_Model_Resource_Eav_Attribute extends Mage_Catalog_Model_Resource_Eav_Attribute
+{
+}

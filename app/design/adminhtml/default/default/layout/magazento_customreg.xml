@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<layout>	
+    <customreg_attribute_edit>
+        <reference name="js">
+            <block type="adminhtml/template" name="attribute_edit_js" template="magazento_customreg/js.phtml"></block>
+        </reference>  
+        <reference name="left">
+            <block type="customreg/customer_attribute_edit_tabs" name="cust_attribute_edit_tabs"></block>
+        </reference>
+        <reference name="content">
+            <block type="customreg/customer_attribute_edit" name="cust_attribute_edit_content"></block>
+        </reference>
+    </customreg_attribute_edit>	
+</layout>

@@ -1,0 +1,168 @@
+<?php
+//var_dump($this->getAttr());
+?><?php if (!(($this->getAttr()->getData('frontend_input') == 'text') && ($this->getAttr()->getData('is_altview')))):
+    ?>
+    <label for = "<?php echo $this->getFieldId($this->getAttr()->getData('frontend_label')) ?>"<?php if ($this->isRequired()) echo ' class="required"' ?>><?php if ($this->isRequired()) echo '<em>*</em>' ?><?php echo $this->__($this->getAttr()->getData('frontend_label')) ?></label>
+<?php endif; ?>
+<div class="input-box">
+    <?php
+    if ($this->getFormType() == 'checkout_register') {
+        $fieldId = 'billing[' . $this->getFieldId($this->getAttr()->getData('attribute_code')) . ']';
+        $fieldName = 'billing[' . $this->getFieldName($this->getAttr()->getData('attribute_code')) . ']';
+    } else {
+        $fieldId = $this->getFieldId($this->getAttr()->getData('attribute_code'));
+        $fieldName = $this->getFieldName($this->getAttr()->getData('attribute_code'));
+    }
+    switch ($this->getAttr()->getData('frontend_input')) {
+        case 'select': {
+                ?>
+                <?php
+                $value = $this->getCustomer()->getData($this->getAttr()->getData('attribute_code'));
+                $options = Mage::getResourceSingleton('customer/customer')->getAttribute($this->getAttr()->getData('attribute_id'))
+                        ->getSource()
+                        ->getAllOptions();
+                ?>
+                <?php if (!$this->getAttr()->getData('is_altview')): ?>
+                    <select id="<?php echo $fieldId; ?>" name = "<?php echo $fieldName; ?>" title="<?php echo $this->__($this->getAttr()->getData('frontend_label')) ?>"<?php if ($this->isRequired()): ?> class="validate-select"<?php endif; ?> <?php echo $this->getFieldParams() ?> >
+                        <?php foreach ($options as $option): ?>
+                            <option value="<?php echo $option['value'] ?>"<?php if ($option['value'] == $value) echo ' selected="selected"' ?>><?php echo $option['label'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                <?php else: ?>
+                    <?php foreach ($options as $option): ?>
+                        <?php if ($option['value']): ?>
+                            <input type="radio" id="<?php echo $fieldId; ?>" name = "<?php echo $fieldName; ?>" value="<?php echo $option['value'] ?>"<?php if ($option['value'] == $value) echo ' checked' ?> /> 
+                            <?php echo $option['label']; ?> 
+
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                <?php
+                break;
+            }
+            ?>
+        <?php case 'multiselect': {
+                ?>
+                <?php
+                $value = $this->getCustomer()->getData($this->getAttr()->getData('attribute_code'));
+// var_dump($value);
+                $value = explode(',', $value);
+                //    var_dump($options = Mage::getResourceSingleton('customer/customer')->getAttribute($this->getAttr()->getData('attribute_id'))
+                //         ->getSource());
+                $options = Mage::getResourceSingleton('customer/customer')->getAttribute($this->getAttr()->getData('attribute_id'))
+                        ->getSource()
+                        ->getAllOptions();
+                //   var_dump($options);
+                if (!$this->getAttr()->getData('is_altview')):
+                    ?>
+                    <select multiple id="<?php echo $fieldId ?>[]" name="<?php echo $fieldName; ?>[]" title="<?php echo $this->__($this->getAttr()->getData('frontend_label')) ?>"
+                            class="multiselect <?php if ($this->isRequired()): ?>required-entry<?php endif; ?>"" <?php echo $this->getFieldParams() ?> >
+                                <?php foreach ($options as $option): ?>
+                                    <?php if ($option['value']): ?>
+                                <option value="<?php echo $option['value'] ?>"<?php if (in_array($option['value'], $value)) echo ' selected="selected"' ?>><?php echo $option['label'] ?></option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </select>
+                    <?php else:
+                    ?>
+                    <?php
+                    $count = 0;
+                    foreach ($options as $option):
+                        $count++;
+                        ?>
+                        <?php if ($option['value']): ?>
+                            <input type="checkbox" name="<?php echo $fieldName; ?>" class="checkbox <?php if ($this->isRequired()): ?> validate-one-required-by-name<?php endif; ?>" id="<?php echo $fieldId . '[]'; ?>" value="<?php echo $option['value'] ?>" <?php if (in_array($option['value'], $value)) echo ' checked' ?> /> <?php echo $option['label'] ?> <br>
+
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php
+                endif;
+                break;
+            }
+            ?>
+        <?php case 'boolean': {
+                ?>
+                <?php
+                $value = $this->getCustomer()->getData($this->getAttr()->getData('attribute_code'));
+                $options = Mage::getResourceSingleton('customer/customer')->getAttribute($this->getAttr()->getData('attribute_id'))
+                        ->getSource()
+                        ->getAllOptions();
+
+                foreach ($options as $option):
+                    ?>
+
+                    <input type = 'radio' id="<?php echo $fieldId; ?>" name = "<?php echo $fieldName; ?>" value = "<?php echo $option['value'] ?>"<?php
+                if ($option['value'] == $value)
+                    echo 'checked'
+                        ?>><?php echo $option['label'] ?> <br/>
+
+                    <?php
+                endforeach;
+                break;
+            }
+            ?>
+        <?php case 'textarea': {
+                ?>
+
+                <textarea id = "<?php echo $fieldId; ?>" name = "<?php echo $fieldName; ?>" title = "<?php echo $this->__($this->getAttr()->getData('frontend_label')) ?>" class = "input-text <?php echo $this->helper('customer/address')->getAttributeValidationClass('taxvat') ?>" <?php echo $this->getFieldParams()
+                ?> ><?php echo $this->escapeHtml($this->getCustomer()->getData($this->getAttr()->getData('attribute_code'))) ?></textarea> 
+                          <?php
+                          break;
+                      }
+                      ?>
+                  <?php case 'date': {
+                          ?>
+                          <?php
+                          if ($this->getCustomer()->getData($this->getAttr()->getData('attribute_code'))) {
+                              $value = strtotime($this->getCustomer()->getData($this->getAttr()->getData('attribute_code')));
+                              $value = date('d.m.Y', $value);
+                          }
+                          ?>
+                <input type="text" style="width:110px" class="input-text <?php
+              echo $this->getAttr()->getData('frontend_class');
+              if ($this->isRequired())
+                  echo ' required-entry';
+                          ?>" title=""  name="<?php echo $fieldName; ?>" id="<?php echo $fieldId; ?>" value="<?php echo $value; ?>"
+                       />
+                <img style="" title="Select Date" id="_account<?php echo $this->escapeHtml($this->getAttr()->getData('attribute_code')) ?>_trig" class="v-middle" alt="" src="/skin/adminhtml/default/default/images/grid-cal.gif" />
+                <script type="text/javascript">
+                    //<![CDATA[
+                    Calendar.setup({
+                        inputField: "<?php echo $fieldId; ?>",
+                        ifFormat: "%d.%m.%Y",
+                        showsTime: false,
+                        button: "_account<?php echo $this->escapeHtml($fieldId) ?>_trig",
+                        align: "Bl",
+                        singleClick : true
+                    });
+                    //]]>
+                </script>
+
+
+
+                <?php
+                break;
+            }
+            ?>
+
+        <?php default: {
+                ?>
+                <?php if (!$this->getAttr()->getData('is_altview')): ?>
+                    <input type = "text" id = "<?php echo $fieldId; ?>" name = "<?php echo $fieldName; ?>" value = "<?php echo $this->getCustomer()->getData($this->getAttr()->getData('attribute_code')) ?>" title = "<?php echo $this->__($this->getAttr()->getData('frontend_label')) ?>" 
+                           class = "input-text <?php
+                echo $this->getAttr()->getData('frontend_class');
+                if ($this->isRequired())
+                    echo ' required-entry'; // $this->helper('customer/address')->getAttributeValidationClass('taxvat')  
+                    ?>" <?php echo $this->getFieldParams()
+                    ?> /> 
+                       <?php else: ?>
+                           <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId($this->getCustomer()->getData($this->getAttr()->getData('attribute_code')))->toHtml(); ?>
+                       <?php endif; ?>
+                   <?php }
+                   ?>
+           <?php } ?>
+    <p id="<?php echo $this->getFieldId($this->getAttr()->getData('frontend_label')) ?>" class="note">
+        <span><?php echo $this->getAttr()->getData('note'); ?></span>
+    </p>
+</div>
+
